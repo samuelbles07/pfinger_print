@@ -1,0 +1,57 @@
+<html>
+<head>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+</head>
+<body>
+			
+
+<div class="full colorgr_darker">	
+
+			<div class="logo2">
+				<a href=""><img width="100px" src="images/logo3.png"/></a>
+			</div>
+
+		<form id="login_form" class="form" method="POST">
+			<input class="input-form" id="username" type="text" placeholder="Username" >
+			<input class="input-form" id="password" type="password" placeholder="Password" >
+			<button class="colorgr_darker login" type="submit" ><i class="fa fa-fw fa-lock"></i>SIGN IN</button>
+			<div class="forgot">
+				<div id="loader"><img width="50px" src="images/library/tail-spin.svg"></img></div>
+				<div class="lupa"><a href="">Lupa Password</a></div>
+			</div>
+			<div class="forgot salah">
+			<div id="salah">
+				<i class="fa fa-fw fa-sign-in"></i> Username atau Password Anda Salah
+			</div>
+			</div>
+		</form>	
+<script>
+$(document).ready(function() {
+    $('.login').click(function(e) {
+        $.ajax({
+            type        : 'POST',
+            url         : 'php/login.php',
+            data        : 'username='+$('#username').val()+'&password='+$('#password').val(),
+            dataType    : 'html',         
+			success : function(pesan){
+				if(pesan=="ok"){
+					 window.location="page/adm-beranda.php";
+				}
+				else{
+					$(".salah").fadeIn('fast');
+					$("#loader").hide();
+				}
+			},
+			beforeSend:function(){				
+				$("#loader").show();
+				$(".salah").hide();
+		   }
+		});
+	return false;
+	});
+});
+</script>
+</body>
+</html>

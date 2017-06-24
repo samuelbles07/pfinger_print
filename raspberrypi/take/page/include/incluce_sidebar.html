@@ -1,0 +1,119 @@
+<div class="side colorside">
+		<div class="logo">
+		</div>
+		
+			<ul class="sidebar-menu" id="nav-accordion">
+              	  	
+                  <li class="mt">
+                      <a class="" href="adm-beranda.php">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Halaman Utama</span>
+                      </a>
+                  </li>
+				  <!--<li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-book"></i>
+                          <span>Buku</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="display: none; overflow: hidden;">
+                          <li><a href="form-input-buku.php">Tambah Buku Baru</a></li>
+                          <li><a href="view-buku.php">Lihat Buku</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-download"></i>
+                          <span>Transaksi</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="display: none; overflow: hidden;">
+                          <li><a href="form-transaksi.php">Peminjaman Baru</a></li>
+                          <li><a href="view-transaksi.php">Pengembalian</a></li>
+                      </ul>
+                  </li>-->
+                  <li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-users "></i>
+                          <span>Anggota</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="display: none; overflow: hidden;">
+                          <li><a href="form-input-anggota.php">Tambah Anggota</a></li>
+                          <li><a href="view-anggota.php">Lihat Anggota</a></li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-user"></i>
+                          <span>Admin</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="overflow: hidden; display: none;">
+                          <!--<li><a href="form-input-admin.php">Tambah Admin</a></li> -->
+                          <li><a href="view-admin.php">Lihat Admin</a></li>
+                      </ul>
+                  </li>
+
+                 <!-- <li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-ioxhost"></i>
+                          <span>Referensi</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="display: none; overflow: hidden;">
+                          <li><a href="view-jenis.php">Lihat Jenis</a></li>
+                          <li><a href="view-kategori.php">Lihat Kategori</a></li>
+                          <li><a href="view-lokasi.php">Lihat Lokasi</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-th"></i>
+                          <span>Fitur</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="display: none; overflow: hidden;">
+                          <li><a href="backup.php">Backup Database</a></li>
+                          <li><a href="form-edit-aturan.php">Ubah Aturan</a></li>
+                      </ul>
+                  </li>-->
+				  
+				  
+				     <li class="sub-menu dcjq-parent-li">
+                      <a href="javascript:;" class="dcjq-parent">
+                          <i class="fa fa-list-ul"></i>
+                          <span>Laporan</span>
+                      <span class="dcjq-icon"></span></a>
+                      <ul class="sub" style="display: none; overflow: hidden;">
+                          <li><a href="#">Laporan A</a></li>
+                          <li><a href="#">Laporan B</a></li>
+                          <li><a href="#">Laporan C</a></li>
+                      </ul>
+                  </li>
+
+
+              </ul>
+			  
+			  
+			  
+		<div class="bottom">
+			<a href="../php/logout.php">
+			<button class="button tupu colory_darker">LOG OUT</button>
+			<button id="menushow" class="button tipu colorgr_darker"><i class="fa fa-fw fa-sign-out"></i></button>
+			</a>
+		</div>
+</div>
+
+<script>
+$(document).ready(function() {
+$(function() {
+			$('#nav-accordion').dcAccordion({
+				eventType: 'click',
+				autoClose: true,
+				saveState: true,
+				disableLink: true,
+				speed: 'fast',
+				showCount: false,
+				autoExpand: true,
+		//        cookie: 'dcjq-accordion-1',
+				classExpand: 'dcjq-current-parent'
+			});
+		});
+});
+</script>
