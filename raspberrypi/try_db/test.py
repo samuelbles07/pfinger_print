@@ -30,12 +30,12 @@ def insertData(con):
 
 
 try:
-  con = mdb.connect('localhost', 'root', 'raspberry', 'sidikjari')
+  con = mdb.connect('127.0.0.1', 'root', '', 'sidikjari')
   
   cur = con.cursor()
-  #cur.execute("SELECT VERSION()")  
-  #ver = cur.fetchone()
-  #print "databse version : %s" % ver
+  cur.execute("SELECT VERSION()")  
+  ver = cur.fetchone()
+  print "databse version : %s" % ver
   insertData(con)
   readData(con)
   #updateData(con)
@@ -44,7 +44,6 @@ try:
 except mdb.Error, e:
 
   print "Error %d: %s" % (e.args[0], e.args[1])
-  #print "err"
   sys.exit(1)
 
 finally:

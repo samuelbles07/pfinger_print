@@ -56,7 +56,7 @@
 			$j_cari		= mysqli_num_rows($query);
 			$jm_cari	= ceil($j_cari/$per_halaman);
 		} else if ($go == "" || $cari == "Pencarian...") {
-			$query		=mysqli_query($con, "SELECT * FROM data_anggota ORDER BY id_user LIMIT $awal,$batas");
+			$query		=mysqli_query($con, "SELECT * FROM data_anggota ORDER BY id LIMIT $awal,$batas");
 			$j_cari		= mysqli_num_rows($query);
 			$jm_cari	= ceil($j_cari/$per_halaman);
 		}
@@ -104,14 +104,14 @@
 		while ($hasil=mysqli_fetch_array($query)) {
 		//$no++;
 		echo "<tr>
-			  <td class='td-data'><a href='view-riwayat.php?id_user=$hasil[id_user]'>$hasil[id_user]</td>
+			  <td class='td-data'><a href='view-riwayat.php?id_user=$hasil[id]'>$hasil[id]</td>
 			  <td class='td-data'>$hasil[nim]</td>
 			  <td class='td-data'>$hasil[nama]</td>
 			  <td class='td-data'>$hasil[jk]</td>
 			  <td class='td-data'>$hasil[alamat]</td>
 			  <td class='td-data'>$hasil[nope]</td>
-			  <td class='td-data'><a href='form-edit-anggota.php?id_user=$hasil[id_user]'><i class='fa fa-gear'></i> EDIT</a></td>
-			  <td class='td-data'><a href='../php/action/act_hapus_anggota.php?id_user=$hasil[id_user]' onclick='return confirm(\"Anda yakin ingin menghapus data ini ?\")'><i class='fa fa-remove'></i> HAPUS</a></td>
+			  <td class='td-data'><a href='form-edit-anggota.php?id_user=$hasil[id]'><i class='fa fa-gear'></i> EDIT</a></td>
+			  <td class='td-data'><a href='../php/action/act_hapus_anggota.php?id_user=$hasil[id]' onclick='return confirm(\"Anda yakin ingin menghapus data ini ?\")'><i class='fa fa-remove'></i> HAPUS</a></td>
 			  </tr>";
 		}
 		?>

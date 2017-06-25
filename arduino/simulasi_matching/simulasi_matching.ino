@@ -88,11 +88,11 @@ void matching() {
     mySerial.println("not match..");
     return 0;
   }
-  // mode, userId high, userId low, id_sensor
-  int data[] = {2, ret[3], ret[4], id_sensor};
+  // mode, head, user high, user low, id sensor, foot
+  int data[] = {2, 245, ret[3], ret[4], id_sensor,  245};
   for (int x = 0; x < 4; x++) {   // kirim data
     client.print(data[x]);
-    delayMicroseconds(100);
+    delayMicroseconds(1);
   }
   mySerial.println("data sent");
   delay(2000);

@@ -163,15 +163,14 @@ void regis() {
   mySerial.println("success delete");
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ DISINI KIRIM DATA KE SERVER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  client.println(1);      // KIRIM MODE REGISTER DI AWAL DATA YAITU 1
-  delayMicroseconds(100);
-  client.print(first);    // KIRIM USER ID HIGH
-  delayMicroseconds(100);
-  client.print(last);     // USER ID LOW
-  delayMicroseconds(100);
+  
+//  client.print(first);    // KIRIM USER ID HIGH
+//  client.print(last);     // USER ID LOW
+  client.print(1);      // KIRIM MODE REGISTER DI AWAL DATA YAITU 1
+  delayMicroseconds(1);
   for (i = 8; i < 508; i++) {   // KIRIM DATA NYA FEATURE
     client.print(myArr[i]);
-    delayMicroseconds(100);
+    delayMicroseconds(1);
   }
 
 }
@@ -190,7 +189,6 @@ void regisFromServer() {
   // #################################### REGIS KEMBALI DARI DATA YANG DIKIRIM DARI SERVER ###############
 
   byte regisBack[] = {0xF5, 0x41, 0x01, 0xF1, 0x00, 0x00, 0xB1, 0xF5};    // Command upload register
-  //  myArr[1] = 0x41;//  myArr[6] = 0xB1;
   byte data[8];
   i = 0; j = 0;
   mySerial.println("sending the data to register");
