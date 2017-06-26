@@ -9,12 +9,12 @@
 #include <Ethernet.h>
 #include <SoftwareSerial.h>
 
-SoftwareSerial mySerial(6, 7); // RX, TX
+SoftwareSerial mySerial(7, 6); // RX, TX
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};  // memberikan mac address acak ke arduino
 IPAddress ip(192, 168, 1, 20); // memberikan ip acak ke arduino
 
-IPAddress server(192, 168, 43, 170); // ip server yang mau dikoneksikan
+IPAddress server(192, 168, 1, 10); // ip server yang mau dikoneksikan
 
 EthernetClient client;  // menginisialisasikan library ethernet dan menampung object ke client
 
@@ -34,7 +34,7 @@ void setup() {
   delay(100);
   mySerial.print("connecting...");  // menampilkan
   // jika arduino connect ke ip server dan port tersebut maka berhasil koneksi dengan server
-  if (client.connect(server, 8888)) {
+  if (client.connect(server, 10006)) {
     mySerial.print("connected");
   }
   else {
@@ -64,11 +64,12 @@ void loop() {
 
 int getChk(int opt, int role) {// getChk punya 2 parameter yaitu opsi dan role
   int chk = 0;                 // opsi byte ke 2 ; role byte ke 4
-  int data[4];
+  int data[] = {opt, first, last, role};
+//  int data[4];
   // simpan masing2 nilai ke array agar dihitung checksum nya
   // sesuai di datasheet checksum itu mulai byte ke 2 sampai byte ke 5
   // tetapi byte ke 5 selalu 0 makanya sampai 4 aja di checksum
-  data[0] = opt; data[1] = first; data[2] = last; data[3] = role;
+//  data[0] = opt; data[1] = first; data[2] = last; data[3] = role;
   for (int i = 0; i < 4; i++)
     chk ^= data[i];     // checksum fingerprint menggunakan bitwise xor
   return chk;         // kembalikan hasil checksum/chk
@@ -163,29 +164,31 @@ void regis() {
   mySerial.println("success delete");
 
   // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ DISINI KIRIM DATA KE SERVER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  
-//  client.print(first);    // KIRIM USER ID HIGH
-//  client.print(last);     // USER ID LOW
+
   client.print(1);      // KIRIM MODE REGISTER DI AWAL DATA YAITU 1
   delayMicroseconds(1);
   for (i = 8; i < 508; i++) {   // KIRIM DATA NYA FEATURE
     client.print(myArr[i]);
     delayMicroseconds(1);
   }
-
+  mySerial.println("selesai kirim");
 }
+
 
 void regisFromServer() {
   int i = 0, j = 0;
   byte myArr[500];
   // DISINI HANDLE KONEKSI DATA DARI SERVER MASUK KE ARRAY
-  while(i < 500 && j < 25000){    // HANDLE DATA SEBANYAK 500 BYTE YANG HARUS DITERIMA
-    if(client.available()){
+  while (i < 500 && j < 25000) {  // HANDLE DATA SEBANYAK 500 BYTE YANG HARUS DITERIMA
+    if (client.available()) {
       myArr[i] = client.read(); // TAMPUNG KE ARRAY myArr
       i++;
     }
     j++;
   }
+  mySerial.print("i: "); mySerial.println(i);
+  mySerial.print("j: "); mySerial.println(j);
+  
   // #################################### REGIS KEMBALI DARI DATA YANG DIKIRIM DARI SERVER ###############
 
   byte regisBack[] = {0xF5, 0x41, 0x01, 0xF1, 0x00, 0x00, 0xB1, 0xF5};    // Command upload register
@@ -208,6 +211,7 @@ void regisFromServer() {
     mySerial.println(data[x], HEX);
     delay(5);
   }
+  mySerial.println("selesai ");
 }
 
 

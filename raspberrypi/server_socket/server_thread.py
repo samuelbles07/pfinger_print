@@ -1,21 +1,16 @@
-# import math
-# import struct
 import socket
 import select
 import threading
+import struct
 import sys
-import time
+import datetime
 import MySQLdb as mdb
 
-#strHex = "0x%0.2X" % integerVariable
-# " ".join(data)
-# print time.strftime("%H:%M:%S")
-# print time.strftime("%d/%m/%Y")
 
 _HOST = '192.168.1.10'  # defines the host as "localhost"
-_PORT = 10009       # defines the port as "10000"
+_PORT = 10015       # defines the port as "10000"
 
-class ChatServer(threading.Thread):
+class Server(threading.Thread):
     """
     Defines the server as a Thread.
     """
@@ -47,8 +42,16 @@ class ChatServer(threading.Thread):
         self.server_socket.listen(self.MAX_WAITING_CONNECTIONS)
         self.connections.append(self.server_socket)
 
+    
     def _send(self, sock, msg):
-        sock.send(msg)
+        # Sends the packed message
+        values = []
+        for i in range(0, 500):
+            values.append(245)
+            packer = struct.Struct('I')
+            packed_data = packer.pack(values)
+            sock.sendall(packed_data)
+
 
     def _receive(self, sock):
         """
@@ -62,9 +65,11 @@ class ChatServer(threading.Thread):
         count = 0
         while count < 2:
             data = sock.recv(self.RECV_BUFFER)
+            # print data
             incoming.append(data)
             if data == '245':
                 count += 1
+                print count
 
         print 'habis'
         return incoming
@@ -78,10 +83,10 @@ class ChatServer(threading.Thread):
         :param client_message: the message to broadcast
         """
         for sock in self.connections:
-            is_not_the_server = sock != self.server_socket
-            is_not_the_client_sending = sock != client_socket
-            if is_not_the_server: #and is_not_the_client_sending:
-                try :
+            not_server = sock != self.server_socket
+            currentClient = sock != client_socket
+            if not_server: #and currentClient:
+                try:
                     self._send(sock, client_message)
                 except socket.error:
                     # Handles a possible disconnection of the client "sock" by...
@@ -100,13 +105,24 @@ class ChatServer(threading.Thread):
             if table == "data_anggota":
                 with con:
                     # cur = con.cursor()
-                    cur.execute("INSERT INTO data_anggota(`data_sidik`, `id_high`, `id_low`) VALUES (%s, %s, %s)", (data, user_id[0], user_id[1]))
+                    cur.execute("INSERT INTO data_anggota(`data_sidik`, `id_high`, `id_low`) \
+                                VALUES (%s, %s, %s)", \
+                                (data, user_id[0], user_id[1]))
                     print "inserted: ", cur.rowcount
                     
             elif table == "log_anggota":
+                now = datetime.datetime.now()
+                jam8 = now.replace(hour=8, minute=0, second=0, microsecond=0)
+                jam5 = now.replace(hour=17, minute=0, second=0, microsecond=0)
+                keterangan = 'A'
+                print keterangan
+                if now >= jam8 and now <= jam5:
+                    keterangan = 'H'
                 with con:
                     # cur = con.cursor()
-                    cur.execute("INSERT INTO admin(`nip`, `username`, `password`) VALUES (%s,%s,%s)",("12345678", "tes", "tes"))
+                    cur.execute("INSERT INTO log_anggota(`id_high`, `id_low`, `id_hari`, `id_sensor`, `tgl`, `jam`, `keterangan`) \
+                                VALUES (%s,%s,%s,%s,%s,%s,%s)",\
+                                (user_id[0], user_id[1], now.isoweekday(), data, now.date(), now.time(), keterangan))
                     print "inserted: ", cur.rowcount
 
         except mdb.Error, e:
@@ -134,8 +150,8 @@ class ChatServer(threading.Thread):
         """
         print 'regis'
         joinData = " ".join(data[1:])
-        # self._broadcast(client_socket, data[1:])
-        self._saveData('data_anggota', data[2:4], joinData)
+        self._broadcast(client_socket, data[1:])
+        # self._saveData('data_anggota', data[2:4], joinData)
 
     def _run(self):
         """
@@ -201,7 +217,7 @@ def main():
     """
     The main function of the program. It creates and runs a new Server.
     """
-    chat_server = ChatServer(_HOST, _PORT)
+    chat_server = Server(_HOST, _PORT)
     chat_server.start()
 
 

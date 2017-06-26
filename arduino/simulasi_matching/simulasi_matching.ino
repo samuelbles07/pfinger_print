@@ -11,12 +11,12 @@
 
 #define id_sensor 2
 
-SoftwareSerial mySerial(6, 7); // RX, TX
+SoftwareSerial mySerial(7, 6); // RX, TX
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};  // memberikan mac address acak ke arduino
 IPAddress ip(192, 168, 1, 20); // memberikan ip acak ke arduino
 
-IPAddress server(192, 168, 43, 170); // ip server yang mau dikoneksikan
+IPAddress server(192, 168, 1, 10); // ip server yang mau dikoneksikan
 
 EthernetClient client;  // menginisialisasikan library ethernet dan menampung object ke client
 
@@ -36,7 +36,7 @@ void setup() {
   delay(100);
   mySerial.print("connecting...");  // menampilkan
   // jika arduino connect ke ip server dan port tersebut maka berhasil koneksi dengan server
-  if (client.connect(server, 8888)) {
+  if (client.connect(server, 10004)) {
     mySerial.print("connected");
   }
   else {
@@ -84,17 +84,24 @@ void matching() {
     delay(5);
   }
 
-  if(ret[5] == 0){
+  if(ret[4] == 0){                    // JIKA USER ROLE 0 MAKA NOT MATCH
     mySerial.println("not match..");
     return 0;
   }
-  // mode, head, user high, user low, id sensor, foot
-  int data[] = {2, 245, ret[3], ret[4], id_sensor,  245};
-  for (int x = 0; x < 4; x++) {   // kirim data
-    client.print(data[x]);
-    delayMicroseconds(1);
+  else{
+    // mode, head, user high, user low, id sensor, foot
+    int id_low = ret[2];
+    int id_high = ret[3];
+    mySerial.println(id_low);
+    mySerial.println(id_high);
+    byte data[] = {2, 245, ret[2], ret[3], id_sensor,  245};
+    for (int x = 0; x < 6; x++) {   // kirim data
+      client.print(data[x]);
+      delayMicroseconds(1);
+    }
+    mySerial.println("data sent");  
   }
-  mySerial.println("data sent");
-  delay(2000);
+  
+  delay(4000);
 }
 
