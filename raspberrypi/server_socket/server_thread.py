@@ -8,7 +8,7 @@ import MySQLdb as mdb
 
 
 _HOST = '192.168.1.10'  # defines the host as "localhost"
-_PORT = 10015       # defines the port as "10000"
+_PORT = 10004       # defines the port as "10000"
 
 class Server(threading.Thread):
     """
@@ -45,12 +45,12 @@ class Server(threading.Thread):
     
     def _send(self, sock, msg):
         # Sends the packed message
-        values = []
-        for i in range(0, 500):
-            values.append(245)
-            packer = struct.Struct('I')
-            packed_data = packer.pack(values)
-            sock.sendall(packed_data)
+        print "kirim"
+        msgLen = len(msg)
+        # print msgLen
+        for index in range(0, msgLen):
+            # print index
+            sock.send(msg[index] + ',')
 
 
     def _receive(self, sock):
@@ -68,8 +68,8 @@ class Server(threading.Thread):
             # print data
             incoming.append(data)
             if data == '245':
+                # print count
                 count += 1
-                print count
 
         print 'habis'
         return incoming
@@ -151,7 +151,7 @@ class Server(threading.Thread):
         print 'regis'
         joinData = " ".join(data[1:])
         self._broadcast(client_socket, data[1:])
-        # self._saveData('data_anggota', data[2:4], joinData)
+        self._saveData('data_anggota', data[2:4], joinData)
 
     def _run(self):
         """

@@ -11,7 +11,7 @@
 
 #define id_sensor 2
 
-SoftwareSerial mySerial(7, 6); // RX, TX
+SoftwareSerial mySerial(6, 7); // RX, TX
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};  // memberikan mac address acak ke arduino
 IPAddress ip(192, 168, 1, 20); // memberikan ip acak ke arduino
@@ -19,8 +19,6 @@ IPAddress ip(192, 168, 1, 20); // memberikan ip acak ke arduino
 IPAddress server(192, 168, 1, 10); // ip server yang mau dikoneksikan
 
 EthernetClient client;  // menginisialisasikan library ethernet dan menampung object ke client
-
-
 
 #define fstatus digitalRead(2)
 #define button digitalRead(3)
