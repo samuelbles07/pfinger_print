@@ -46,7 +46,7 @@ void loop() {
   if (client.available()) {
     regisFromServer();
     lcd.clear();
-    lcd.print("done receive data and regis back");
+    lcd.print("done regis back");
     delay(1000);
     lcd.clear();
     lcd.print("put your finger");
