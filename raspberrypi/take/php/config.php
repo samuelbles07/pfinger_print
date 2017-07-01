@@ -1,3 +1,3 @@
 <?php
-$con = mysqli_connect("localhost", "root", "", "sidikjari");
+$con = mysqli_connect("localhost", "root", "raspberry", "sidikjari");
 ?>

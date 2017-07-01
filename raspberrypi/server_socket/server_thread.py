@@ -8,7 +8,7 @@ import MySQLdb as mdb
 
 
 _HOST = '192.168.1.10'  # defines the host as "localhost"
-_PORT = 10004       # defines the port as "10000"
+_PORT = 10003       # defines the port as "10000"
 
 class Server(threading.Thread):
     """
@@ -114,10 +114,12 @@ class Server(threading.Thread):
                 now = datetime.datetime.now()
                 jam8 = now.replace(hour=8, minute=0, second=0, microsecond=0)
                 jam5 = now.replace(hour=17, minute=0, second=0, microsecond=0)
-                keterangan = 'A'
-                print keterangan
+                keterangan = ''
                 if now >= jam8 and now <= jam5:
                     keterangan = 'H'
+                else:
+                    keterangan = 'A'
+                print keterangan
                 with con:
                     # cur = con.cursor()
                     cur.execute("INSERT INTO log_anggota(`id_high`, `id_low`, `id_hari`, `id_sensor`, `tgl`, `jam`, `keterangan`) \

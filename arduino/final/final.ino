@@ -13,7 +13,7 @@ LiquidCrystal lcd(9, 8, 7, 6, 5, 4); // menginisialisasikan library lcd dan mena
 
 #define fstatus digitalRead(2)  // define pin untuk status finger print disentuh
 #define button digitalRead(3)   // define pin untuk button ditekan
-#define id_sensor 2     // define pin sensor no berapa
+#define id_sensor 3     // define pin sensor no berapa
 int first = 0, last = 0;    // deklarasi variabel untuk id high low
 
 // first byte ke 2, last byte ke 3
@@ -27,7 +27,7 @@ void setup() {
   delay(100);
   lcd.print("connecting...");  // menampilkan
   // jika arduino connect ke ip server dan port tersebut maka berhasil koneksi dengan server
-  if (client.connect(server, 10004)) {
+  if (client.connect(server, 10003)) {
     lcd.clear();
     lcd.print("connected");
     lcd.setCursor(0, 1); // mendefinisikan posisi y menjadi 1
@@ -237,13 +237,13 @@ void regisFromServer() {
 }
 
 void matching() {
-  delay(500);   // tunda agar posisi jari benar dulu
   // matching command
   byte matching[] = {0xF5, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x0C, 0xF5};
   byte ret[8];
   int i = 0, j = 0;
+  lcd.clear();
   lcd.print("matching..");
-  delay(100);
+  delay(500);   // tunda agar posisi jari benar dulu
   Serial.write(matching, 8);
   while (!Serial.available());  // menunggu sampai adanya return dari sensor
   delay(1000);                  // tunda sampai regis dan semua data return sampai ke buffer
@@ -254,10 +254,7 @@ void matching() {
     }
     j++;
   }
-  for (int x = 0; x < i; x++) {   // ini hanya nampilkan return
-    lcd.print(ret[x], HEX);
-    delay(5);
-  }
+  lcd.clear();
 
   if (ret[4] == 0) {                  // JIKA USER ROLE 0 MAKA NOT MATCH
     lcd.print("not match..");
@@ -268,12 +265,14 @@ void matching() {
     int id_low = ret[2];
     int id_high = ret[3];
     lcd.print(id_low);
+    lcd.print(" ");
     lcd.print(id_high);
     byte data[] = {2, 245, ret[2], ret[3], id_sensor,  245};
     for (int x = 0; x < 6; x++) {   // kirim data
       client.print(data[x]);
       delayMicroseconds(1);
     }
+    lcd.setCursor(0,1);
     lcd.print("data sent");
   }
 
