@@ -27,7 +27,7 @@ void setup() {
   delay(100);
   lcd.print("connecting...");  // menampilkan
   // jika arduino connect ke ip server dan port tersebut maka berhasil koneksi dengan server
-  if (client.connect(server, 10003)) {
+  if (client.connect(server, 10004)) {
     lcd.clear();
     lcd.print("connected");
     lcd.setCursor(0, 1); // mendefinisikan posisi y menjadi 1
