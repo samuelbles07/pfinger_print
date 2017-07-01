@@ -1,6 +1,6 @@
 # pfinger_print
-distributed finger print sensor.
+##Distributed finger print sensor.##
 
-This project using raspberry pi as socket and web server
-and arduino as the client socket 
-finger print using OK-300 module
+Markup:	* Raspberry pi 2 as socket and web server.
+	* Arduino as the client socket
+	* Finger print sensor using OK-300 module

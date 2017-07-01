@@ -107,7 +107,7 @@ class Server(threading.Thread):     #menginisialisasi class server
         print user_id
         print data
         try:
-            con = mdb.connect('127.0.0.1', 'root', '', 'sidikjari') # membuat koneksi ke db
+            con = mdb.connect('127.0.0.1', 'root', 'raspberry', 'sidikjari') # membuat koneksi ke db
             cur = con.cursor()
             if table == "data_anggota":
                 with con:
