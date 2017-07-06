@@ -112,9 +112,9 @@ class Server(threading.Thread):     #menginisialisasi class server
             if table == "data_anggota":
                 with con:
                     # eksekusi query
-                    cur.execute("INSERT INTO data_anggota(`data_sidik`, `id_high`, `id_low`) \
-                                VALUES (%s, %s, %s)", \
-                                (data, user_id[0], user_id[1]))
+                    cur.execute("INSERT INTO data_anggota(`id_user`, `data_sidik`) \
+                                VALUES (%s, %s)", \
+                                (data, user_id))
                     print "inserted: ", cur.rowcount
             elif table == "log_anggota":
                 now = datetime.datetime.now()   # mendapatkan jam dan hari sesuai sistem
@@ -129,9 +129,9 @@ class Server(threading.Thread):     #menginisialisasi class server
                 print keterangan
                 with con:
                     # eksekusi query
-                    cur.execute("INSERT INTO log_anggota(`id_high`, `id_low`, `id_hari`, `id_sensor`, `tgl`, `jam`, `keterangan`) \
-                                VALUES (%s,%s,%s,%s,%s,%s,%s)",\
-                                (user_id[0], user_id[1], now.isoweekday(), data, now.date(), now.time(), keterangan))
+                    cur.execute("INSERT INTO log_anggota(`id_user`, `id_hari`, `id_sensor`, `tgl`, `jam`, `keterangan`) \
+                                VALUES (%s,%s,%s,%s,%s,%s)",\
+                                (user_id, now.isoweekday(), data, now.date(), now.time(), keterangan))
                     print "inserted: ", cur.rowcount
 
         except mdb.Error, e:
@@ -149,8 +149,8 @@ class Server(threading.Thread):     #menginisialisasi class server
             data[4] : id sensor
         """
         print 'match'
-        self._saveData('log_anggota', data[2:4], data[4])
-
+        userID = self._convertId(data[2:4])
+        self._saveData('log_anggota', userID, data[4])
 
     def _regis(self, client_socket, data):
         """
@@ -158,10 +158,23 @@ class Server(threading.Thread):     #menginisialisasi class server
             data[1:] : data finger print, simpan di db dan broadcast.
         """
         print 'regis'
+        userID = self._convertId(data[2:4])
+
         # buat data yang mau di save ke db jadi text string yang dipisah spasi
         joinData = " ".join(data[1:])
         self._broadcast(client_socket, data[1:])
-        self._saveData('data_anggota', data[2:4], joinData)
+        self._saveData('data_anggota', userID, joinData)
+
+    def _convertId(self, ID):
+        """
+            Jika user high yaitu ID[0] itu bernilai atau tak sama dengan 0
+            maka id high ditambahkan dengan 255
+            jika tidak maka id user ialah id low saja
+        """
+        if ID[0] != '0':
+            return int(ID[0]) + 255
+        else:
+            return ID[1]
 
     def _run(self):
         """
